@@ -26,7 +26,7 @@ export default function TransacaoForm({
   transacaoSelecionada,
   setTransacaoSelecionada,
 }: TransacaoFormProps) {
-  const [tipo, setTipo] = useState("");
+  const [tipo, setTipo] = useState<"Depósito" | "Transferência" | "">("");
   const [valor, setValor] = useState("");
   const [data, setData] = useState(() =>
     new Date().toISOString().split("T")[0]
@@ -64,28 +64,29 @@ export default function TransacaoForm({
     );
 
     if (modoEdicao && transacaoSelecionada) {
-            const transacoesAtualizadas: Transacao[] = transacoes.map((t) =>
-  t.id === transacaoSelecionada.id
-    ? {
-        id: t.id,
-        tipo: tipo as "Depósito" | "Transferência",
-        valor: valorNumerico,
-        data,
-      }
-    : t
-);
+  const transacoesAtualizadas = transacoes.map((t) =>
+    t.id === transacaoSelecionada.id
+      ? {
+          id: t.id,
+          tipo,
+          valor: valorNumerico,
+          data,
+        }
+      : t
+  );
 
-      setTransacoes(transacoesAtualizadas);
-    } else {
-            const novaTransacao: Transacao = {
-        id: uuidv4(),
-        tipo: tipo as "Depósito" | "Transferência",
-        valor: valorNumerico,
-        data,
-      };
+  setTransacoes(transacoesAtualizadas);
+} else {
+  const novaTransacao: Transacao = {
+    id: uuidv4(),
+    tipo,
+    valor: valorNumerico,
+    data,
+  };
 
-      setTransacoes((prev) => [...prev, novaTransacao]);
-    }
+  setTransacoes((prev) => [...prev, novaTransacao]);
+}
+
 
     limparFormulario();
   };
