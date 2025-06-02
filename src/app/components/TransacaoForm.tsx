@@ -64,19 +64,21 @@ export default function TransacaoForm({
     );
 
     if (modoEdicao && transacaoSelecionada) {
-      const transacoesAtualizadas = transacoes.map((t) =>
+            const transacoesAtualizadas = transacoes.map((t) =>
         t.id === transacaoSelecionada.id
-          ? { ...t, tipo, valor: valorNumerico, data }
+          ? { ...t, tipo: tipo as "Depósito" | "Transferência", valor: valorNumerico, data }
           : t
       );
+
       setTransacoes(transacoesAtualizadas);
     } else {
-      const novaTransacao = {
+            const novaTransacao: Transacao = {
         id: uuidv4(),
-        tipo,
+        tipo: tipo as "Depósito" | "Transferência",
         valor: valorNumerico,
         data,
       };
+
       setTransacoes((prev) => [...prev, novaTransacao]);
     }
 
