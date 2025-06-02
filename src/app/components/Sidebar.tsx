@@ -1,6 +1,14 @@
-export default function Sidebar() {
+type Props = {
+  visivel?: boolean;
+};
+
+export default function Sidebar({ visivel = true }: Props) {
   return (
-    <aside className="bg-[#1a1b1f] rounded-xl p-4 shadow-md h-fit flex flex-col gap-2">
+    <aside
+      className={`${
+        visivel ? "block" : "hidden"
+      } md:block bg-[#1a1b1f] rounded-xl p-4 shadow-md h-fit flex flex-col gap-2`}
+    >
       {["Início", "Transferências", "Investimentos", "Outros serviços"].map((item, i) => (
         <button
           key={item}
@@ -8,7 +16,8 @@ export default function Sidebar() {
             i === 0
               ? "border-byteGreen font-semibold text-byteGreen bg-[#26272b]"
               : "border-transparent text-gray-300 hover:bg-[#2a2a2a]"
-          }`}>
+          }`}
+        >
           {item}
         </button>
       ))}
