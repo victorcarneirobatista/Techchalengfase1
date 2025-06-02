@@ -69,17 +69,26 @@ export default function TransacaoForm({
     );
 
     if (modoEdicao && transacaoSelecionada) {
-      const transacoesAtualizadas = transacoes.map((t): Transacao => {
-        if (t.id === transacaoSelecionada.id) {
-          return {
-            id: t.id,
-            tipo,
-            valor: valorNumerico,
-            data,
-          };
-        }
-        return t;
-      });
+  const transacoesAtualizadas = transacoes.map((t): Transacao => {
+    if (t.id === transacaoSelecionada.id) {
+      return {
+        id: t.id,
+        tipo,
+        valor: valorNumerico,
+        data,
+      };
+    }
+    return {
+      id: t.id,
+      tipo: t.tipo,
+      valor: t.valor,
+      data: t.data,
+    };
+  });
+
+  setTransacoes(transacoesAtualizadas);
+}
+
 
       setTransacoes(transacoesAtualizadas);
     } else {
