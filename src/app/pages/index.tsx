@@ -1,7 +1,7 @@
-import SaldoCard from "./components/SaldoCard";
-import Extrato from "./components/Extrato";
-import Sidebar from "./components/Sidebar";
-import TransacaoForm from "./components/TransacaoForm";
+import SaldoCard from "../components/SaldoCard";
+import Extrato from "../components/Extrato";
+import Sidebar from "../components/Sidebar";
+import TransacaoForm from "../components/TransacaoForm";
 
 
 export default function Home() {
