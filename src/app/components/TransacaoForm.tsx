@@ -53,57 +53,53 @@ export default function TransacaoForm({
     setTransacaoSelecionada(null);
   };
 
-  const handleSubmit = () => {
-    if (!tipo || !valor || !data) {
-      alert("Preencha todos os campos.");
-      return;
-    }
+const handleSubmit = () => {
+  if (!tipo || !valor || !data) {
+    alert("Preencha todos os campos.");
+    return;
+  }
 
-    if (tipo !== "Depósito" && tipo !== "Transferência") {
-      alert("Tipo inválido.");
-      return;
-    }
+  if (tipo !== "Depósito" && tipo !== "Transferência") {
+    alert("Tipo inválido.");
+    return;
+  }
 
-    const valorNumerico = parseFloat(
-      valor.replace(/[R$\s.]/g, "").replace(",", ".")
-    );
+  const valorNumerico = parseFloat(
+    valor.replace(/[R$\s.]/g, "").replace(",", ".")
+  );
 
-    if (modoEdicao && transacaoSelecionada) {
-  const transacoesAtualizadas = transacoes.map((t): Transacao => {
-    if (t.id === transacaoSelecionada.id) {
+  if (modoEdicao && transacaoSelecionada) {
+    const transacoesAtualizadas = transacoes.map((t): Transacao => {
+      if (t.id === transacaoSelecionada.id) {
+        return {
+          id: t.id,
+          tipo,
+          valor: valorNumerico,
+          data,
+        };
+      }
       return {
         id: t.id,
-        tipo,
-        valor: valorNumerico,
-        data,
+        tipo: t.tipo,
+        valor: t.valor,
+        data: t.data,
       };
-    }
-    return {
-      id: t.id,
-      tipo: t.tipo,
-      valor: t.valor,
-      data: t.data,
+    });
+
+    setTransacoes(transacoesAtualizadas);
+  } else {
+    const novaTransacao: Transacao = {
+      id: uuidv4(),
+      tipo,
+      valor: valorNumerico,
+      data,
     };
-  });
 
-  setTransacoes(transacoesAtualizadas);
-}
+    setTransacoes((prev) => [...prev, novaTransacao]);
+  }
 
-
-      setTransacoes(transacoesAtualizadas);
-    } else {
-      const novaTransacao: Transacao = {
-        id: uuidv4(),
-        tipo,
-        valor: valorNumerico,
-        data,
-      };
-
-      setTransacoes((prev) => [...prev, novaTransacao]);
-    }
-
-    limparFormulario();
-  };
+  limparFormulario();
+};
 
   return (
     <div className="relative bg-byteCard text-white rounded-2xl p-6 shadow-md flex flex-col gap-4 w-full overflow-hidden border border-byteBorder">
