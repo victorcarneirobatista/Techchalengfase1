@@ -59,44 +59,45 @@ export default function TransacaoForm({
       return;
     }
 
+    if (tipo !== "Depósito" && tipo !== "Transferência") {
+      alert("Tipo inválido.");
+      return;
+    }
+
     const valorNumerico = parseFloat(
       valor.replace(/[R$\s.]/g, "").replace(",", ".")
     );
 
     if (modoEdicao && transacaoSelecionada) {
       const transacoesAtualizadas = transacoes.map((t): Transacao => {
-  if (t.id === transacaoSelecionada.id) {
-    return {
-      id: t.id,
-      tipo: tipo === "Depósito" ? "Depósito" : "Transferência",
-      valor: valorNumerico,
-      data,
-    };
-  }
-  return t;
-    });
+        if (t.id === transacaoSelecionada.id) {
+          return {
+            id: t.id,
+            tipo,
+            valor: valorNumerico,
+            data,
+          };
+        }
+        return t;
+      });
 
+      setTransacoes(transacoesAtualizadas);
+    } else {
+      const novaTransacao: Transacao = {
+        id: uuidv4(),
+        tipo,
+        valor: valorNumerico,
+        data,
+      };
 
-
-  setTransacoes(transacoesAtualizadas);
-} else {
-  const novaTransacao: Transacao = {
-    id: uuidv4(),
-    tipo,
-    valor: valorNumerico,
-    data,
-  };
-
-  setTransacoes((prev) => [...prev, novaTransacao]);
-}
-
+      setTransacoes((prev) => [...prev, novaTransacao]);
+    }
 
     limparFormulario();
   };
 
   return (
     <div className="relative bg-byteCard text-white rounded-2xl p-6 shadow-md flex flex-col gap-4 w-full overflow-hidden border border-byteBorder">
-      
       <h2 className="text-lg font-semibold text-white">
         {modoEdicao ? "Editar transação" : "Nova transação"}
       </h2>
@@ -106,14 +107,15 @@ export default function TransacaoForm({
           Tipo
         </label>
         <select
-            value={tipo}
-            onChange={(e) => setTipo(e.target.value)}
-            className="p-3 rounded-lg border border-byteBlue text-sm focus:outline-none focus:ring-2 focus:ring-byteBlue bg-[#1f1f1f] text-white placeholder-gray-400">
-            <option value="" disabled hidden>
-              Selecione o tipo de transação
-            </option>
-            <option value="Depósito">Depósito</option>
-            <option value="Transferência">Transferência</option>
+          value={tipo}
+          onChange={(e) => setTipo(e.target.value as "Depósito" | "Transferência")}
+          className="p-3 rounded-lg border border-byteBlue text-sm focus:outline-none focus:ring-2 focus:ring-byteBlue bg-[#1f1f1f] text-white placeholder-gray-400"
+        >
+          <option value="" disabled hidden>
+            Selecione o tipo de transação
+          </option>
+          <option value="Depósito">Depósito</option>
+          <option value="Transferência">Transferência</option>
         </select>
       </div>
 
@@ -135,7 +137,8 @@ export default function TransacaoForm({
             });
             setValor(formatted);
           }}
-          className="p-3 rounded-lg border border-byteBlue bg-transparent text-sm text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-byteBlue"/>
+          className="p-3 rounded-lg border border-byteBlue bg-transparent text-sm text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-byteBlue"
+        />
       </div>
 
       <div className="flex flex-col gap-2">
@@ -147,13 +150,15 @@ export default function TransacaoForm({
           type="date"
           value={data}
           onChange={(e) => setData(e.target.value)}
-          className="p-3 rounded-lg border border-byteBlue bg-transparent text-sm text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-byteBlue"/>
+          className="p-3 rounded-lg border border-byteBlue bg-transparent text-sm text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-byteBlue"
+        />
       </div>
 
       <button
-          onClick={handleSubmit}
-          className="bg-[#0E1116] text-white rounded-lg py-2 font-semibold hover:bg-[#004A5D] transition-colors">
-          {modoEdicao ? "Salvar edição" : "Concluir transação"}
+        onClick={handleSubmit}
+        className="bg-[#0E1116] text-white rounded-lg py-2 font-semibold hover:bg-[#004A5D] transition-colors"
+      >
+        {modoEdicao ? "Salvar edição" : "Concluir transação"}
       </button>
     </div>
   );
