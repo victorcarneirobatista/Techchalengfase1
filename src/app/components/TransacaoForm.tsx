@@ -65,16 +65,17 @@ export default function TransacaoForm({
 
     if (modoEdicao && transacaoSelecionada) {
       const transacoesAtualizadas = transacoes.map((t): Transacao => {
-        if (t.id === transacaoSelecionada.id) {
-          return {
-            id: t.id,
-            tipo: tipo as "Depósito" | "Transferência",
-            valor: valorNumerico,
-            data,
-          };
-        }
-        return t;
-      });
+  if (t.id === transacaoSelecionada.id) {
+    return {
+      id: t.id,
+      tipo: tipo === "Depósito" ? "Depósito" : "Transferência",
+      valor: valorNumerico,
+      data,
+    };
+  }
+  return t;
+    });
+
 
 
   setTransacoes(transacoesAtualizadas);
